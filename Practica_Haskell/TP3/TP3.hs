@@ -239,3 +239,112 @@ maxLen [] = 0
 maxLen (x:xs) = max2 (len x) (maxLen xs)
 
 
+-- 2 - EXPRESIONES ARITMÉTICAS
+------------------------------
+
+--EJERCICIO 1
+
+--BinOp por OpBinaria
+--UnOp por OpUnaria
+--BinExp por ConsExpBinaria
+--UnExp por ConsExpUnaria
+--Const por Constante
+
+data Exp = 	Const Int
+			| UnExp UnOp Exp
+			| BinExp BinOp Exp Exp
+			
+--data UnOp = Neg
+
+data BinOp = Suma | Resta | Mult | Div
+
+--1)
+--Propósito: Dada una expresión evalúe esta expresión y retorne su valor.
+--Precondición: Es parcial cuando e2 es cero en la Exp = BinExp Div e1 e2
+
+--		- (6+6)-((6-5)/(4*7)) = - 12 - (1 )/28
+cuenta :: Exp
+cuenta = UnExp Neg (BinExp Resta (BinExp Suma (Const 6) (Const 6)) (BinExp Div (BinExp Resta (Const 6) (Const 5)) (BinExp Mult (Const 4) (Const 7))))
+
+--eval :: Exp -> Int
+--eval (Const n) = n
+--eval (UnExp Neg e) = - eval e
+--eval (BinExp Suma e1 e2) = eval e1 + eval e2
+--eval (BinExp Resta e1 e2) = eval e1 - eval e2
+--eval (BinExp Mult e1 e2) = eval e1 * eval e2
+--eval (BinExp Div e1 e2) = div (eval e1) (eval e2)
+			
+			
+--2)
+--Propósito: 
+
+--		- (6+6)-((6-5)/(0*7)) = - 12 - (1 )/28
+--cuenta :: Exp
+--cuenta = UnExp Neg (BinExp Resta (BinExp Suma (Const 6) (Const 6)) (BinExp Div (BinExp Resta (Const 6) (Const 5)) (BinExp Mult (Const 4) (Const 7))))
+
+
+--simplificar :: Exp -> Exp
+--simplificar (Const n) = Const n
+--simplificar (UnExp Neg e) = UnExp Neg (simplificar e)
+--simplificar (BinExp bo e1 e2) = sim (BinExp bo (simplificar e1) (simplificar e2))
+
+--sim :: Exp -> Exp
+--sim (BinExp Suma (Const 0) e2) = e2
+--sim (BinExp Suma e1 (Const 0)) = e1
+--sim (BinExp Resta e1 (Const 0)) = e1
+--sim (BinExp Resta (Const 0) e2) = UnExp Neg e2
+--sim (BinExp Mult e1 (Const 0)) = Const 0
+--sim (BinExp Mult (Const 0) e2) = Const 0
+--sim (BinExp Mult e1 (Const 1)) = e1
+--sim (BinExp Mult (Const 1) e2) = e2
+--sim (BinExp Div (Const 0) e2) = Const 0
+--sim (BinExp Div e1 (Const 1)) = e1
+--sim e = e
+
+
+--EJERCICIO 2
+-------------
+
+data UnOp = Neg | Inc | Dec
+
+--1)
+
+eval :: Exp -> Int
+eval (Const n) = n
+eval (UnExp Neg e) = - eval e
+eval (UnExp Dec e) =  eval e - 1
+eval (UnExp Inc e) = 1 + eval e
+eval (BinExp Suma e1 e2) = eval e1 + eval e2
+eval (BinExp Resta e1 e2) = eval e1 - eval e2
+eval (BinExp Mult e1 e2) = eval e1 * eval e2
+eval (BinExp Div e1 e2) = div (eval e1) (eval e2)
+
+
+
+
+simplificar :: Exp -> Exp
+simplificar (Const n) = Const n
+simplificar (UnExp Neg e) = UnExp Neg (simplificar e)
+simplificar (UnExp Inc e) = UnExp Inc (simplificar e)
+simplificar (UnExp Dec e) = UnExp Dec (simplificar e)
+simplificar (BinExp bo e1 e2) = sim (BinExp bo (simplificar e1) (simplificar e2))
+
+sim :: Exp -> Exp
+sim (BinExp Suma (Const 0) e2) = e2
+sim (BinExp Suma e1 (Const 0)) = e1
+sim (BinExp Resta e1 (Const 0)) = e1
+sim (BinExp Resta (Const 0) e2) = UnExp Neg e2
+
+sim (BinExp Suma (Const 1) e2) = Inc e2
+sim (BinExp Suma e1 (Const 1)) = Inc e1
+sim (BinExp Resta e1 (Const 1)) = Dec e1
+sim (BinExp Resta (Const 1) e2) = UnExp Neg (Dec e2)
+
+sim (BinExp Mult e1 (Const 0)) = Const 0
+sim (BinExp Mult (Const 0) e2) = Const 0
+sim (BinExp Mult e1 (Const 1)) = e1
+sim (BinExp Mult (Const 1) e2) = e2
+sim (BinExp Div (Const 0) e2) = Const 0
+sim (BinExp Div e1 (Const 1)) = e1
+sim e = e
+
