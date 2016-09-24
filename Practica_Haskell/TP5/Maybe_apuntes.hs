@@ -84,6 +84,8 @@ last2 [x] = Just x
 last2 (x:xs) = last2 xs
 
 
+--Este no es el enunciado del ejercicio.
+----------------------------------------
 --Sin Maybe
 -----------
 
@@ -102,4 +104,5 @@ indiceDe [] _ = Nothing
 indiceDe (x:xs) 0 = Just x
 indiceDe (x:xs) n =	indiceDe xs (n-1)
  
+-----------------------------------------
 
