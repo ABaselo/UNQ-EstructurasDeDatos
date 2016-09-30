@@ -151,7 +151,7 @@ leaves (NodeT x a1 a2) = leaves a1 + leaves a2
 --Propósito: Dado un árbol devuelve su altura.
 --Nota: la altura (height en inglés) de un árbol es la cantidad máxima de nodos entre la raíz y alguna de sus hojas. La altura de un árbol vacío es cero y la de una hoja es 1.
 heightT :: Tree a -> Int
-heightT Empty = -1
+heightT Empty = 0
 heightT (NodeT _ a1 a2)= 1 + max2 (heightT a1) (heightT a2)
 
 max2 :: Int -> Int -> Int
@@ -221,7 +221,7 @@ levelN n (NodeT x a1 a2) = levelN (n-1) a1 ++ levelN (n-1) a2
 --19)
 --Propósito: Dado un árbol devuelve una lista de listas en la que cada elemento representa un nivel de dicho árbol.
 listPerLevel :: Tree a -> [[a]]
-listPerLevel a = recolectarNNiveles (heightT a) a
+listPerLevel a = recolectarNNiveles (heightT a - 1) a
 
 recolectarNNiveles :: Int -> Tree a -> [[a]]
 recolectarNNiveles 0 a = [levelN 0 a]

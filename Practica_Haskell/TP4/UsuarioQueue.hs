@@ -8,15 +8,32 @@ largoQ c = 	if isEmptyQ c
 			else 1 + largoQ (dequeue c)
  
 
+--Prop.: Dada una cola de personas, devuelve la lista de las mismas, donde el orden de la lista es de la cola.
+--Prec.: 
+atender :: Queue Persona -> [Persona]
+atender c =	if isEmptyQ c
+			then []
+			else firstQ c : atender (dequeue c)
+			
+
+--(i) es este ejercicio esta mal el orden en que se insertan los elementos de la segunda cola en la primera.
+--Prop.: Inserta todos los elementos de la segunda cola en la primera.
+unirQ :: Queue a -> Queue a -> Queue a
+unirQ c1 c2 =	if not (isEmptyQ c2)
+				then queue (firstQ c2) (unirQ (dequeue c2) c1)
+				else c1
+
+
+--ALGUNOS EJEMPLOS PARA USAR CON QUEUE
+
 data Persona = MKPersona Int String
 personaEjem = MKPersona 2 "2"
 
-examplePersonas :: Queue Persona
-examplePersonas = queue (MKPersona 3 "3") (queue (MKPersona 2 "2") (queue (MKPersona 1 "1") (emptyQ)))
+p1 :: Queue Persona
+p1 = queue (MKPersona 3 "3") (queue (MKPersona 2 "2") (queue (MKPersona 1 "1") (emptyQ)))
 
---Prop.: Dada una cola de personas, devuelve la lista de las mismas, donde el orden de la lista es de la cola.
---Prec.: 
---atender :: Queue Persona -> [Persona]
---atender c =	if isEmptyQ c
---			then []
---			else firstQ c : dequeue c
+q1 :: Queue Int
+q1 = queue 1 (queue 2 (queue 3 (queue 4 (queue 5 (queue 6 (emptyQ))))))
+
+q2 :: Queue Int
+q2 = queue 7 (queue 8 (queue 9 (queue 10 (queue 11 (queue 12 (emptyQ))))))
