@@ -39,33 +39,27 @@ elem (NodeT e _ _) = e
 --Prop.: Dado un BST devuelve un par con el máximo elemento y el árbol sin el mismo.
 --splitMaxBST :: Ord a => Tree a -> (a, Tree a)
 
--------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------
-------------------------------------------- MAL -------------------------------------------------
--------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------
 --Prop.: Dado un BST y un elemento, devuelve el máximo elemento que sea menor al elemento dado.
+--Prec.: Error en caso de no encontrar el elemento buscado.
 elMaximoMenorA :: Ord a => a -> Tree a -> a
 elMaximoMenorA x EmptyT = error "No existe el elemento buscado."
-elMaximoMenorA x (NodeT e EmptyT t1) = 
-		if x <= e
-		then elMaximoMenorA x EmptyT
-		else elMaximoMenorA x t1
-elMaximoMenorA x (NodeT e t1 EmptyT) = 
-		if x == e
-		then maxBST t1
-		else 	if x > e
-				then e
-				else elMaximoMenorA x t1
-elMaximoMenorA x (NodeT e t1 t2) =	let maxT1 = maxBST t1;
-										minT2 = minBST t2
-									in
-										if x == e || (maxT1 < x && minT2 > x)
-										then maxT1
-										else	if x > e
-												then elMaximoMenorA x t2
-												else elMaximoMenorA x t1
-				
+elMaximoMenorA x (NodeT e t1 t2) = 	if e < x
+									then buscarMaximaCotaSuperiorEnT t2 e x
+									else	if e > x
+											then elMaximoMenorA x t1
+											else maxBST t1
+
+--Prop.: Dados una cota inferior, una cota superior y un arbol se devuelve el máximo elemento del arbol que sea menor a la cota superior.
+--Prec.: Ninguna.
+buscarMaximaCotaSuperiorEnT :: Ord a => Tree a -> a -> a -> a
+buscarMaximaCotaSuperiorEnT EmptyT inf sup  = inf
+buscarMaximaCotaSuperiorEnT (NodeT e t1 t2) inf sup = 
+			if inf < e
+			then	if e < sup
+					then buscarMaximaCotaSuperiorEnT t2 e sup
+					else buscarMaximaCotaSuperiorEnT t1 inf sup
+			else buscarMaximaCotaSuperiorEnT t2 inf sup
+
 elementoDelNodoRaiz :: Tree a -> a
 elementoDelNodoRaiz (NodeT e _ _) = e
 
@@ -75,7 +69,7 @@ maxBST (NodeT e _ t) = maxBST t
 
 minBST :: Tree a -> a
 minBST (NodeT e EmptyT EmptyT) = e
-minBST (NodeT e t _) = maxBST t
+minBST (NodeT e t _) = minBST t
 				
 --Prop.: Dado un BST y un elemento, devuelve el mínimo elemento que sea mayor al elemento dado.
 --elMinimoMayorA :: Ord a => a -> Tree a -> [a]
