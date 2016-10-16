@@ -1,11 +1,13 @@
---INVARIANTE:
---	Dado un NodeT x t1 t2
---		1- Los elementos de t1 son menores que x.
---		2- Los elementos de t2 son mayores que x.
---		3- t1 y t2 son BST.
+{--INVARIANTE:
+	Dado un NodeT x t1 t2
+		1- Los elementos de t1 son menores que x.
+		2- Los elementos de t2 son mayores que x.
+		3- t1 y t2 son BST.
+--}
 
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
+data Tree a = EmptyT | NodeT a (Tree a) (Tree a)
+
+-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ --
 
 --Prop.: Dado un BST inserta un elemento en el árbol.
 --Prec.: El elem dado no pertenece al BST.
@@ -17,8 +19,7 @@ insertBST e (NodeT x t1 t2) = 	if e==x
 										then NodeT x (insertBST e t1) t2
 										else NodeT x t1 (insertBST e t2)
 										
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
+-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ --
 
 --Prop.: Dado un BST dice si el elemento pertenece o no al árbol.
 perteneceBST :: Ord a => a -> Tree a -> Bool
@@ -27,8 +28,7 @@ perteneceBST e (NodeT x t1 t2) = 	if e <= x
 									then e==x || perteneceBST e t1
 									else perteneceBST e t2
 
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
+-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ --
 
 --Prop.: Dado un BST devuelve un par con el mínimo elemento y el árbol sin el mismo.
 --splitMinBST :: Ord a => Tree a -> (a, Tree a)
@@ -45,14 +45,12 @@ esHoja t1 = False
 elem :: Tree a -> a
 elem (NodeT e _ _) = e
 
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
+-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ --
 
 --Prop.: Dado un BST devuelve un par con el máximo elemento y el árbol sin el mismo.
 --splitMaxBST :: Ord a => Tree a -> (a, Tree a)
 
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
+-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ --
 
 --Prop.: Dado un BST y un elemento, devuelve el máximo elemento que sea menor al elemento dado.
 --Prec.: Error en caso de no encontrar el elemento buscado.
@@ -63,6 +61,8 @@ elMaximoMenorA x (NodeT e t1 t2) = 	if e < x
 									else	if e > x
 											then elMaximoMenorA x t1
 											else maxBST t1
+
+-- f aux.: --
 
 --Prop.: Dados una cota inferior, una cota superior y un arbol se devuelve el máximo elemento del arbol que sea menor a la cota superior.
 --Prec.: Ninguna.
@@ -79,8 +79,7 @@ maxBST :: Tree a -> a
 maxBST (NodeT e EmptyT EmptyT) = e
 maxBST (NodeT e _ t) = maxBST t
 
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
+-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ --
 
 --Prop.: Dado un BST y un elemento, devuelve el mínimo elemento que sea mayor al elemento dado.
 --Prec.: Error en caso de no encontrar el elemento buscado.
@@ -91,6 +90,8 @@ elMinimoMayorA x (NodeT e t1 t2) = 	if x < e
 									else	if e < x
 											then elMinimoMayorA x t2
 											else minBST t2
+
+-- f aux.: --
 
 --Prop.: Dados una cota inferior, una cota superior y un arbol se devuelve el mínimo elemento del arbol que sea mayor a la cota inferior.
 --Prec.: Ninguna.
@@ -107,8 +108,6 @@ minBST :: Tree a -> a
 minBST (NodeT e EmptyT EmptyT) = e
 minBST (NodeT e t _) = minBST t
 
-
-data Tree a = EmptyT | NodeT a (Tree a) (Tree a)
 
 ejBST :: Tree Int
 ejBST = NodeT 9 (NodeT 4 (NodeT 2 (NodeT 1 EmptyT EmptyT) (NodeT 3 EmptyT EmptyT)) (NodeT 5 EmptyT EmptyT)) (NodeT 15 (NodeT 12 EmptyT EmptyT) (NodeT 22 EmptyT EmptyT))

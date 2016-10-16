@@ -1,3 +1,4 @@
+module Map(Map, emptyM, assocM, lookupM, deleteM, domM) where
 
 import Set
 --(2).-----------------------------------------------------------------------------------------
