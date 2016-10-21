@@ -65,8 +65,8 @@ insertT e (Der:np) (NodeT x t1 t2) = orderUpDer x t1 (insertT e np t2)
 -- O(1)
 orderUpIzq :: Ord a => a -> Tree a -> Tree a -> Tree a
 orderUpIzq m tree1@(NodeT m' t1 t2) tree2 =		if m < m'
-							then NodeT m tree1 tree2
-							else NodeT m' (NodeT m t1 t2) tree2 
+												then NodeT m tree1 tree2
+												else NodeT m' (NodeT m t1 t2) tree2 
 												
 -- PRECONDICIÓN: Los árboles son heap.
 -- PROPÓSITO: Dado una raíz y dos subarboles, arma un árbol con invariantes heap
@@ -74,8 +74,8 @@ orderUpIzq m tree1@(NodeT m' t1 t2) tree2 =		if m < m'
 -- O(1)
 orderUpDer :: Ord a => a -> Tree a -> Tree a -> Tree a
 orderUpDer m tree1 tree2@(NodeT m' t1 t2) =		if m < m'
-							then NodeT m tree1 tree2
-							else NodeT m' tree1 (NodeT m t1 t2)
+												then NodeT m tree1 tree2
+												else NodeT m' tree1 (NodeT m t1 t2)
 												
 -- PROPÓSITO: Dado un heap, retorna el mismo heap sin el mínimo.							
 -- PRECONDICIÓN: El heap debe tener al menos un elemento.

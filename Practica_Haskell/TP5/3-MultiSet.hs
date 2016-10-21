@@ -16,6 +16,7 @@ emptyMSet = MkMS emptyM
 addMS :: Ord a => a -> MultiSet a -> MultiSet a
 addMS e (MkMS m) = MkMS (assocM m e ((lookupInt m e) + 1) )
 
+
 -- /* f auxiliares --
 
 lookupInt :: Eq a => Map a Int -> a -> Int
@@ -39,7 +40,8 @@ ocurrencesMS e (MkMS m) = lookupInt m e
 unionMS :: Ord a => MultiSet a -> MultiSet a -> MultiSet a
 unionMS (MkMS m1) (MkMS m2) = MkMS (unionMaps m1 m2)
 
--- /* f aux --
+
+-- /* f auxiliares --
 
 unionMaps :: Ord k => Map k Int -> Map k Int -> Map k Int
 unionMaps m1 m2 = unionRecursivaDeMaps (claves m1) m1 m2
@@ -61,13 +63,14 @@ claves map = setToList (domM map)
 extraerValor :: Eq k => Map k v -> k -> v
 extraerValor map k = fromJust (lookupM map k)
 
--- FIN f aux */--
+-- FIN f auxiliares */--
 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ --
 
 --Dados dos multiconjuntos devuelve el multiconjunto de elementos que ambos multiconjuntos tienen en común.
 intersectionMS :: Ord a => MultiSet a -> MultiSet a -> MultiSet a
 intersectionMS (MkMS map) ms = MkMS (intersectionMapMS map ms)
+
 
 -- /* f aux: --
 
@@ -84,7 +87,7 @@ intersectionRecursivaMapMS (k:ks) map ms =
 			then intersectionRecursivaMapMS ks (assocM map k (lookupInt map k + ocms)) ms
 			else intersectionRecursivaMapMS ks (deleteM map k) ms
 			
--- FIN f aux */--
+-- FIN f auxiliares */--
 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ --
 
