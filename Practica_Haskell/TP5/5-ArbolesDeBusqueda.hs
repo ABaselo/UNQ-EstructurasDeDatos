@@ -31,24 +31,39 @@ perteneceBST e (NodeT x t1 t2) = 	if e <= x
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ --
 
 --Prop.: Dado un BST devuelve un par con el mínimo elemento y el árbol sin el mismo.
---splitMinBST :: Ord a => Tree a -> (a, Tree a)
---splitMinBST t@(NodeT e t1 t2) = f t EmptyT
+--Prec.: El arbol no es vacío.
+splitMinBST :: Ord a => Tree a -> (a, Tree a)
+splitMinBST (NodeT e EmptyT EmptyT) = (e,EmptyT)
+splitMinBST (NodeT e t1 t2) = 
+				let	par	= splitMinBST t1;
+					tp	= treeEnPar par;
+					mp	= elemEnPar par
+				in
+					(mp,(NodeT e tp t2))
+					
+-- /** f aux: --
 
---f :: Tree a -> Int -> (a, Tree a)
---f (Node )
+treeEnPar :: (a,Tree a) -> Tree a
+treeEnPar (_,t) = t
 
+elemEnPar :: (a,Tree a) -> a
+elemEnPar (elem,_) = elem
 
-esHoja :: Tree a -> Bool
-esHoja (NodeT _ EmptyT EmptyT) = True
-esHoja t1 = False
+-- FIN f aux **/--
 
-elem :: Tree a -> a
-elem (NodeT e _ _) = e
 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ --
 
 --Prop.: Dado un BST devuelve un par con el máximo elemento y el árbol sin el mismo.
---splitMaxBST :: Ord a => Tree a -> (a, Tree a)
+--Prec.: El arbol no es vacío.
+splitMaxBST :: Ord a => Tree a -> (a, Tree a)
+splitMaxBST (NodeT e EmptyT EmptyT) = (e,EmptyT)
+splitMaxBST (NodeT e t1 t2) = 
+				let	par	= splitMaxBST t2;
+					tp	= treeEnPar par;
+					mp	= elemEnPar par
+				in
+					(mp,(NodeT e t1 tp))
 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ --
 
@@ -62,7 +77,7 @@ elMaximoMenorA x (NodeT e t1 t2) = 	if e < x
 											then elMaximoMenorA x t1
 											else maxBST t1
 
--- f aux.: --
+-- /** f aux.: --
 
 --Prop.: Dados una cota inferior, una cota superior y un arbol se devuelve el máximo elemento del arbol que sea menor a la cota superior.
 --Prec.: Ninguna.
@@ -79,6 +94,8 @@ maxBST :: Tree a -> a
 maxBST (NodeT e EmptyT EmptyT) = e
 maxBST (NodeT e _ t) = maxBST t
 
+-- FIN f aux **/ --
+
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ --
 
 --Prop.: Dado un BST y un elemento, devuelve el mínimo elemento que sea mayor al elemento dado.
@@ -91,7 +108,7 @@ elMinimoMayorA x (NodeT e t1 t2) = 	if x < e
 											then elMinimoMayorA x t2
 											else minBST t2
 
--- f aux.: --
+-- /** f aux.: --
 
 --Prop.: Dados una cota inferior, una cota superior y un arbol se devuelve el mínimo elemento del arbol que sea mayor a la cota inferior.
 --Prec.: Ninguna.
@@ -108,6 +125,7 @@ minBST :: Tree a -> a
 minBST (NodeT e EmptyT EmptyT) = e
 minBST (NodeT e t _) = minBST t
 
+-- FIN f aux **/ --
 
 ejBST :: Tree Int
 ejBST = NodeT 9 (NodeT 4 (NodeT 2 (NodeT 1 EmptyT EmptyT) (NodeT 3 EmptyT EmptyT)) (NodeT 5 EmptyT EmptyT)) (NodeT 15 (NodeT 12 EmptyT EmptyT) (NodeT 22 EmptyT EmptyT))
@@ -121,6 +139,4 @@ ejBST = NodeT 9 (NodeT 4 (NodeT 2 (NodeT 1 EmptyT EmptyT) (NodeT 3 EmptyT EmptyT
 --   2   5  12  22
 --  / \
 -- 1   3
-
-
 
