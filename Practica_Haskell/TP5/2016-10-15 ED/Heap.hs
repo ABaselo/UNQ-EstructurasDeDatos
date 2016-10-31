@@ -119,7 +119,7 @@ splitLast []  (NodeT m EmptyT EmptyT) = (m, EmptyT)
 splitLast (Izq:oc) (NodeT m ti td) =	let (m', ti') = splitLast oc ti
 										in (m', NodeT m ti' td)
 
-splitLast (Der :oc) (NodeT m ti td) = 	let (m', td') = splitLast oc td
+splitLast (Der:oc) (NodeT m ti td) = 	let (m', td') = splitLast oc td
 										in (m', NodeT m ti td')
 
 -- Dado un Dirs, retorna un Dirs que representa la próxima posición en un heap.
