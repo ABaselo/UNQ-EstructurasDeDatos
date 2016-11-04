@@ -17,7 +17,7 @@ int main()
 */
     cout << "TEST DE AUTOST:" << endl;
 
-    Auto a = crearAutoVacio();
+    Auto a = crearAutoVacio();// Auto a es lo mismo que AutoSt* a. Es decir, 'a' es un puntero.
 
     cout << "El auto tiene al piloto y copiloto: " << a->piloto << ", " << a->copiloto << endl << endl;
 
